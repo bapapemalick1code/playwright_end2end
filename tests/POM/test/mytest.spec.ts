@@ -2,18 +2,19 @@ import { test, expect } from '@playwright/test';
 import { SignUpPage } from '../pages/signuppage';
 import { LoginPage } from '../pages/loginpage';
 import { LogoutPage } from '../pages/logoutpage';
-import { updateValidUsers, getValidUsers} from '../utils/helpers';
+import { updateValidUsers, getValidUsers, checkAndClosePopup} from '../utils/helpers';
 const { dataUser } = require('../utils/data_test')
+
 
 test.beforeEach(async ({ page }) => {
     // Lancer le navigateur
     await page.goto('https://automationexercise.com/');
     // Définir la taille de la fenêtre du navigateur
     await page.setViewportSize({ width: 1415, height: 1080 });
-    // Passer le popup
-    await page.locator('role=button[name="Consent"]').click();
-    await page.getByRole('link', { name: 'Home' }).click();
+    // Vérifier et passer le popup
+     await checkAndClosePopup(page);    
     // Vérifier le lien Home de la page
+    await page.getByRole('link', { name: 'Home' }).click();
     await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
 });
 

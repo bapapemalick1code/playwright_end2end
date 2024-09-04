@@ -1,3 +1,4 @@
+import { Page } from '@playwright/test'; // Importation du type Page
 import * as fs from 'fs'; //module pour interagir avec le système de fichiers
 import * as path from 'path'; //module pour gérer et manipuler les chemins de fichiers
 
@@ -27,6 +28,15 @@ export function getValidUsers() {
     
     // Retourne 'null' si le fichier n'existe pas ou si aucune donnée n'est disponible
     return null;
+}
+
+
+// Vérifie si le popup est présent et clique sur le bouton si oui
+export async function checkAndClosePopup(page: Page) {
+    const consentButton = page.locator('role=button[name="Consent"]');
+    if (await consentButton.isVisible()) {
+        await consentButton.click();
+    }
 }
 
 

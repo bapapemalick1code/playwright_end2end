@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-const { validUser } = require('../../utils/helpers');
-const { dataUser } = require('../../data/data_test');
+const { validUser } = require('../../utils/helpers_01');
+const { dataUser } = require('../../data/data_test_01');
 
 
 

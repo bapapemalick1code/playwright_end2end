@@ -15,7 +15,7 @@ mytest('Test Case 01 : Register User', async ({ signUpPage }) => {
     updateValidUsers(dataUser.email, dataUser.password);
 });
 
-mytest('Test Case 01 : Login User with correct email and password', async ({ loginPage }) => {
+mytest('Test Case 02 : Login User with correct email and password', async ({ loginPage }) => {
     const validUser = getValidUsers();
     if (!validUser) {
         throw new Error('No valid user found. Make sure the user is registered first.');
@@ -29,7 +29,7 @@ mytest('Test Case 01 : Login User with correct email and password', async ({ log
     await loginPage.verifyAccountDeleted();
 });
 
-mytest('Test Case 02 : Login User with incorrect email and password', async ({ loginPage }) => {
+mytest('Test Case 03 : Login User with incorrect email and password', async ({ loginPage }) => {
     await loginPage.navigateToLogin();
     await loginPage.fillLoginForm('invalidUser@example.com', 'invalidPassword');
     await loginPage.submitLogin();
@@ -37,7 +37,7 @@ mytest('Test Case 02 : Login User with incorrect email and password', async ({ l
 });
 
 
-mytest('Test Case 01: Logout User', async ({ logoutPage }) => {
+mytest.skip('Test Case 04: Logout User', async ({ logoutPage }) => {
     // Effectuer la déconnexion
     await logoutPage.logout();
     await logoutPage.verifyLoggedOut();

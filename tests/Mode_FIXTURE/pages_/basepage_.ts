@@ -43,4 +43,5 @@ export class BasePage {
     async expectCss(locator: Locator, property: string, value: string) {
         await expect(locator).toHaveCSS(property, value);
     }
+
 }

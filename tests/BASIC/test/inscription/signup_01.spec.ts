@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
-const { dataUser } = require('../../data/data_test');
-const { updateValidUser } = require('../../utils/helpers');
+const { dataUser } = require('../../data/data_test_01');
+const { updateValidUser } = require('../../utils/helpers_01');
 
 // Utilisation de la fonction `beforeEach` pour acceder à la home page avant le traitement des Test Cases
 test.beforeEach(async ({ page }) => {

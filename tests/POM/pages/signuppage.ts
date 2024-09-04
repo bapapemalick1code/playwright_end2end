@@ -42,7 +42,8 @@ export class SignUpPage extends BasePage {
         this.emailField = this.page.getByPlaceholder('Email Address').nth(1);
         this.signUpButton = this.page.getByRole('button', { name: 'Signup' });
         this.nameValue = this.page.locator('#name');
-        this.emailValue = this.page.locator('#email');
+        //this.emailValue = this.page.locator('#email');
+        this.emailValue = this.page.getByTestId('email'); //utiliser l'attribut 'data-qa'
         this.titleMr = this.page.getByLabel('Mr.');
         this.passwordField = this.page.getByLabel('password');
         this.daysSelect = this.page.locator('#days');

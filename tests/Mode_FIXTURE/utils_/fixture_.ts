@@ -3,6 +3,7 @@ import { test as base, expect, Page } from '@playwright/test';
 import { LoginPage } from '../pages_/loginpage_';
 import { SignUpPage } from '../pages_/signuppage_';
 import { LogoutPage } from '../pages_/logoutpage_';
+import { checkAndClosePopup } from './helpers_';
 const { dataUser } = require('../utils_/data_test_'); //pour l'optimisation de la fixture logoutPage
 
 
@@ -20,7 +21,9 @@ const mytest = base.extend<MyFixtures>({
     await page.goto('https://automationexercise.com/');
     await page.setViewportSize({ width: 1415, height: 1080 });
     // Gérer les popups ou les éléments initiaux de la page
-    await page.locator('role=button[name="Consent"]').click();
+    //await page.locator('role=button[name="Consent"]').click();
+    // Vérifier si le popup est présent et cliquer sur le bouton consent
+    await checkAndClosePopup(page.locator('role=button[name="Consent"]'));  
     await page.getByRole('link', { name: 'Home' }).click();
     await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
     await use(page); // Permet à la page d'être utilisée dans les tests

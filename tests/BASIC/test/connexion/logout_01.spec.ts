@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-const { validUser } = require('../../utils/helpers');
+const { validUser } = require('../../utils/helpers_01');
 
 test('Test Case 04 : Logout User', async ({ page }) => {
 

@@ -32,6 +32,7 @@ export default defineConfig({
 
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    testIdAttribute: 'data-qa' // pouvoir utiliser la valeur de l'attribut 'data-qa' qui se trouve dans le DOM en appelant page.getByTestId
   },
 
   /* Configure projects for major browsers */
@@ -50,6 +51,7 @@ export default defineConfig({
       name: 'webkit',
       use: { ...devices['Desktop Safari'] },
     },
+
 
     /* Test against mobile viewports. */
     // {
