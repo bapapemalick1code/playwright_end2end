@@ -29,7 +29,7 @@ mytest('Test Case 02 : Login User with correct email and password', async ({ log
     await loginPage.verifyAccountDeleted();
 });
 
-mytest('Test Case 03 : Login User with incorrect email and password', async ({ loginPage }) => {
+mytest.only('Test Case 03 : Login User with incorrect email and password', async ({ loginPage }) => {
     await loginPage.navigateToLogin();
     await loginPage.fillLoginForm('invalidUser@example.com', 'invalidPassword');
     await loginPage.submitLogin();

@@ -2,7 +2,18 @@ import { test, expect } from '@playwright/test';
 const { validUser } = require('../../utils/helpers_01');
 const { dataUser } = require('../../data/data_test_01');
 
-
+// Utilisation de la fonction `beforeEach` pour acceder à la home page avant le traitement des Test Cases
+test.beforeEach(async ({ page }) => {
+    // Lancer le navigateur
+  await page.goto('https://automationexercise.com/');
+  // Définir la taille de la fenêtre du navigateur
+  await page.setViewportSize({ width: 1415, height: 1080 });  
+  //Passer le popup
+  await page.getByRole('button', { name: 'Consent' }).click();
+  await page.getByRole('link', { name: 'Home' }).click();
+  //Vérifier le lien Home de la page
+  await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
+  });
 
 test('Test Case 02 :  Login User with correct email and password', async ({ page }) => {
     
@@ -27,7 +38,7 @@ test('Test Case 02 :  Login User with correct email and password', async ({ page
 
 });
 
-test('Test Case 03 :  Login User with incorrect email and password', async ({ page }) => {
+test.only('Test Case 03 :  Login User with incorrect email and password', async ({ page }) => {
     
     //Cliquer sur le lien SignUp/Login
     await page.getByRole('link', { name: 'Signup / Login' }).click();

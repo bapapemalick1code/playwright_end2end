@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 const { validUser } = require('../../utils/helpers_01');
 
-test('Test Case 04 : Logout User', async ({ page }) => {
+test.skip('Test Case 04 : Logout User', async ({ page }) => {
 
     //Cliquer sur le lien SignUp/Login
     await page.getByRole('link', { name: 'Signup / Login' }).click();

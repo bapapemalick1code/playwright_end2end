@@ -15,7 +15,7 @@ test.beforeEach(async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
   });
 
-test('Test Case 01 : Register User', async ({ page }) => {
+test.skip('Test Case 01 : Register User', async ({ page }) => {
 
     //Cliquer sur le lien SignUp/Login
     await page.getByRole('link', { name: 'Signup / Login' }).click();

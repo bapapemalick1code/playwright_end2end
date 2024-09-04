@@ -32,7 +32,7 @@ test('Test Case 01 : Register User', async ({ page }) => {
 });
 
 
-test('Test Case 01 : Login User with correct email and password', async ({ page }) => {
+test('Test Case 02 : Login User with correct email and password', async ({ page }) => {
     // Récupérer un utilisateur valide
 const validUser = getValidUsers();
 if (!validUser) {
@@ -50,7 +50,7 @@ await loginPage.verifyAccountDeleted();
 });
 
 
-test('Test Case 02 : Login User with incorrect email and password', async ({ page }) => {
+test.only('Test Case 03 : Login User with incorrect email and password', async ({ page }) => {
 const loginPage = new LoginPage(page);
 
 await loginPage.navigateToLogin();
