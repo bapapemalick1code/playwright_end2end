@@ -1,6 +1,8 @@
 import { test, expect } from '@playwright/test';
-const { validUser } = require('../../utils/helpers_01');
+//import { clickConsentButtonIfVisible } from '../../utils/helpers_01';
+const { validUser,clickConsentButtonIfVisible } = require('../../utils/helpers_01');
 const { dataUser } = require('../../data/data_test_01');
+
 
 // Utilisation de la fonction `beforeEach` pour acceder à la home page avant le traitement des Test Cases
 test.beforeEach(async ({ page }) => {
@@ -9,9 +11,10 @@ test.beforeEach(async ({ page }) => {
   // Définir la taille de la fenêtre du navigateur
   await page.setViewportSize({ width: 1415, height: 1080 });  
   //Passer le popup
-  await page.getByRole('button', { name: 'Consent' }).click();
-  await page.getByRole('link', { name: 'Home' }).click();
+  // Vérifier si le popup est présent et cliquer sur le bouton consent
+  await clickConsentButtonIfVisible(page);  
   //Vérifier le lien Home de la page
+  await page.getByRole('link', { name: 'Home' }).click();
   await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
   });
 
