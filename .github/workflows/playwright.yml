@@ -16,8 +16,6 @@ jobs:
         node-version: lts/*
     - name: Install dependencies
       run: npm install  # Installe les dépendances du projet
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test # Exécute les tests Playwright
     
