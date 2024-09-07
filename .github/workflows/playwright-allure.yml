@@ -9,11 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # Ajoute "permissions" pour s'assurer que le bot GitHub Actions dispose des droits de modification (write) sur le contenu du dépôt, ce qui est nécessaire pour pousser sur gh-pages.
     permissions:      
        contents: write  # Donne l'accès en écriture pour le contenu du dépôt
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - name: Check out repository 
+        uses: actions/checkout@v4  # Extraction du code source du dépôt
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -21,10 +22,10 @@ jobs:
           node-version: lts/*
 
       - name: Install dependencies
-        run: npm install
+        run: npm install  # Installe les dépendances du projet
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps  # Installe les navigateurs Playwright
 
       - name: Run Playwright tests with Allure
         run: npm run test:allure  # Exécute les tests Playwright avec Allure
@@ -38,9 +39,9 @@ jobs:
       - name: Deploy Allure Report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
+          github_token: ${{ secrets.GITHUB_TOKEN }} # Utilise le token GitHub Actions pour publier le rapport
+          publish_dir: ./allure-report  # Répertoire contenant les fichiers à publier sur GitHub Pages
 
-      - name: Notify Slack
+      - name: Notify Slack   # Envoie une notification Slack avec le lien vers le rapport Allure. (détails configuration à voir sur le fichier README)
         run: |
             curl -X POST -H 'Content-type: application/json' --data '{"text":"Allure report est disponible ici: <https://bapapemalick1code.github.io/playwright_end2end/|Allure report>"}' ${{ secrets.SLACK_WEBHOOK_URL }}
