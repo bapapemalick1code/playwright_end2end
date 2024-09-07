@@ -9,7 +9,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    permissions:      
+       contents: write  # Donne l'accès en écriture pour le contenu du dépôt
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
