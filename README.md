@@ -8,7 +8,7 @@
     "test:allure": "npm run clean:allure && npm run test && npm run allure:generate && npm run allure:open"  
   }
 
-  # fichier yml avant modif
+  # fichier yml avant modif pour allure 
   name: Playwright Tests
 on:
   push:
@@ -31,4 +31,14 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test # Exécute les tests Playwright
+
+# Github Pages
+GitHub Pages est un service de GitHub qui vous permet d'héberger des sites web directement à partir d'un dépôt GitHub. C'est une excellente option pour héberger des sites statiques, des blogs ou de la documentation de projet.
+
+# Configuration Github Pages 
+Configurer GitHub Pages dans votre Dépôt
+Accéder aux Paramètres du Dépôt :
+Allez dans Settings (Paramètres) de votre dépôt sur GitHub.
+Configurer GitHub Pages :
+Dans la section "Pages" sous "Code and automation", définissez la source comme la branche gh-pages.
     
