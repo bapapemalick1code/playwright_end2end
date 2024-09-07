@@ -43,4 +43,4 @@ jobs:
 
       - name: Notify Slack
         run: |
-            curl -X POST -H 'Content-type: application/json' --data '{"text":"Allure report est disponible : https://bapapemalick1code.github.io/playwright_end2end/"}' ${{ secrets.SLACK_WEBHOOK_URL }}
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Allure report est disponible ici: <https://bapapemalick1code.github.io/playwright_end2end/|Allure report>"}' ${{ secrets.SLACK_WEBHOOK_URL }}
