@@ -40,3 +40,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
+
+      - name: Notify Slack
+        run: |
+            curl -X POST -H 'Content-type: application/json' --data '{"text":"Allure report est disponible : https://bapapemalick1code.github.io/playwright_end2end/"}' ${{ secrets.SLACK_WEBHOOK_URL }}
