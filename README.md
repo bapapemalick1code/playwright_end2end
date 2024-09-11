@@ -10,6 +10,14 @@
     "allure:open": "allure open",
     "test:allure": "npm run clean:allure && npm run test && npm run allure:generate && npm run allure:open"  
   }
+  # Bon script pour generer allure report après execution des tests depuis le CI et le "|| true" c'est pour continuer le lancement des commandes meme si les tests sont failed  
+"scripts": {
+    "clean:allure": "rm -rf allure-results && rm -rf allure-report",
+    "test": "playwright test",
+    "allure:generate": "allure generate --clean",
+    "allure:open": "allure open",
+    "test:allure": "npm run clean:allure && npm run test || true && npm run allure:generate" 
+  }
 
   # fichier yml avant modif pour allure 
   name: Playwright Tests

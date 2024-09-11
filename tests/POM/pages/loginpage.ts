@@ -73,7 +73,7 @@ export class LoginPage extends BasePage {
         // Méthode pour vérifier que la connexion a échoué
     async verifyLoginFailure() {
         await this.expectVisible(this.errorMessage);
-        await this.expectCss(this.errorMessage, 'colo', 'rgb(255, 0, 0)');
+        await this.expectCss(this.errorMessage, 'color', 'rgb(255, 0, 0)');
     }
 }
 
