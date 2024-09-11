@@ -1,3 +1,6 @@
+# FIXTURE
+​​Dans Playwright, les fixtures sont des objets ou des fonctions qui sont exécutés avant les tests pour préparer l'environnement de test. Elles peuvent être définies au niveau global ou au niveau de chaque fichier de test.
+
 # playwright_end2end
 # Bon script pour generer et ouvrir automatiquement allure report après execution des tests en local
 "scripts": {
