@@ -27,7 +27,11 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps  # Installe les navigateurs Playwright
 
-      - name: Run Playwright tests with Allure
+      - name: Run Playwright tests with Allure and Xray Reporter
+        env:
+            XRAY_BASE_URL: ${{ secrets.XRAY_BASE_URL }}
+            XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+            XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
         run: npm run test:allure  # Exécute les tests Playwright avec Allure
 
       - name: Upload Allure results

@@ -15,7 +15,7 @@ mytest('Test Case 01 : Register User', async ({ signUpPage }) => {
     updateValidUsers(dataUser.email, dataUser.password);
 });
 
-mytest('Test Case 02 : Login User with correct email and password', async ({ loginPage }) => {
+mytest('@KAN-3 Test Case 02 : Login User with correct email and password', async ({ loginPage }) => {
     const validUser = getValidUsers();
     if (!validUser) {
         throw new Error('No valid user found. Make sure the user is registered first.');
@@ -29,9 +29,9 @@ mytest('Test Case 02 : Login User with correct email and password', async ({ log
     await loginPage.verifyAccountDeleted();
 });
 
-mytest.only('Test Case 03 : Login User with incorrect email and password', async ({ loginPage }) => {
+mytest('@KAN-4 Test Case 03 : Login User with incorrect email and password', async ({ loginPage }) => {
     await loginPage.navigateToLogin();
-    await loginPage.fillLoginForm('invalidUser@example.com', 'invalidPassword');
+    await loginPage.fillLoginForm('invalidUserexample.com', 'invalidPassword');
     await loginPage.submitLogin();
     await loginPage.verifyLoginFailure();
 });

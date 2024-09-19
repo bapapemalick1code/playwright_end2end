@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean:allure": "rm -rf allure-results && rm -rf allure-report",
-    "test": "playwright test",
+    "test": "playwright test tests/Mode_FIXTURE/test_/mytest_.spec.ts",
     "allure:generate": "allure generate --clean",
     "allure:open": "allure open",
     "test:allure": "npm run clean:allure && npm run test || true && npm run allure:generate"
@@ -19,5 +19,10 @@
     "@types/node": "^22.2.0",
     "allure-commandline": "^2.30.0",
     "allure-playwright": "^3.0.0-beta.11"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5",
+    "form-data": "^4.0.0"
   }
 }

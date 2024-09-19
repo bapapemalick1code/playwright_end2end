@@ -116,4 +116,29 @@ run: |
 # Explication
 <URL|Text> : La syntaxe <URL|Text> permet d'afficher un texte cliquable dans Slack. Le texte entre | est ce qui sera visible, et l'URL entre < et > est le lien cliquable.
 
+
+# Configuration de Playwright avec Xray (Jira)
+# Prérequis
+  1. Avoir un compte JIRA
+  2. Ajouter Xray dans Jira et recupérer les acces XRAY_ClIENT_ID et XRAY_ClIENT_SECRET
+  3. Accès à Xray API : Vous aurez besoin des identifiants API (client_id, client_secret) pour Jira/Xray.
+      chemin depuis Jira/Xray: APPS-> Gerer vos Apps -> Clé API -> Creer une clé Api -> Generer
+      Lien des API Xray pour l'aythenfication, l'import des resultats etc... https://docs.getxray.app/display/XRAYCLOUD/Import+Execution+Results+-+REST+v2
+  4. Créer des cas de test sur xray et ajouter des tags aux cas de test sur playwright pour le mapping
+  5. installer axios pour les requetes HTTPS
+  6. Dans votre fichier de configuration playwright.config.ts, ajoutez la référence au reporter personnalisé ['./xray-reporter.ts'] et le screenshot: 'only-on-failure' dans 'use'
+  7. Créer un fichier xray-reporters.ts et faire les config (Voir le fichier)
+  8. À la fin de chaque exécution de test, les résultats des tests avec les tags seront automatiquement envoyés à Xray (Jira) avec les captures d'écran des tests échoués.
+
+
+    
+
+// Je dois voir comment importer avec des tests fails (mettre des steps dans les cas de tests depuis Xray)
+// Je dois voir comment importer avec l'ensemble des infos qu'on doit avoir dans une execution test
+
+// Je dois voir comment créer directement les cas de tests et une execution tests vers Xray
+// Je dois implementer Cucumber 
+// Integrer le CI
+// Commenter le code pour mieux comprendre et faire une documentation dans le readme
+
     
