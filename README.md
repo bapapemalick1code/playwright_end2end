@@ -139,6 +139,6 @@ run: |
 // Je dois voir comment créer directement les cas de tests et une execution tests vers Xray
 // Je dois implementer Cucumber 
 // Integrer le CI
-// Commenter le code pour mieux comprendre et faire une documentation dans le readme
+// Commenter le code pour mieux comprendre et faire une documentation dans le readme.
 
     
