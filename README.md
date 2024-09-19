@@ -128,7 +128,7 @@ run: |
   5. installer axios pour les requetes HTTPS
   6. Dans votre fichier de configuration playwright.config.ts, ajoutez la référence au reporter personnalisé ['./xray-reporter.ts'] et le screenshot: 'only-on-failure' dans 'use'
   7. Créer un fichier xray-reporters.ts et faire les config (Voir le fichier)
-  8. À la fin de chaque exécution de test, les résultats des tests avec les tags seront automatiquement envoyés à Xray (Jira) avec les captures d'écran des tests échoués.
+  8. À la fin de chaque exécution de test, une nouvelle execution test sera créée depuis Xray avec l'ensemble des cas de test tagués et leur résultat avec les captures d'écran des tests échoués.
 
 
     
