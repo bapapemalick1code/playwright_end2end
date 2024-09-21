@@ -95,7 +95,7 @@ class XrayReporter implements Reporter {
         start: currentDateTime,
         finish: currentDateTime,
         status: this.mapPlaywrightStatusToXray(result.status),
-        comment: result.error ? result.error.message : undefined,
+        comment: result.error ? result.error.message.replace(/\u001b\[.*?m/g, "").replace(/\n/g, "") : undefined, //A formater pour plus de lisibiliter
         evidence: evidence.length ? evidence : undefined //N'inclut pas d'evidence si elle est vide
       };
     });
