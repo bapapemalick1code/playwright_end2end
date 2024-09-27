@@ -48,7 +48,8 @@ class XrayReporterWithSteps implements Reporter {
       steps: steps,
       status: result.status,
       error: result.error,
-      Screenshots: screenshots
+      Screenshots: screenshots,
+      created: false  // Indiquer que le cas de test n'a pas encore été créé (pour gerer le contrainte de retry qui créé 2fois le mm cas de test en l'executant depuis le CI)
     });
   }
 
@@ -76,10 +77,13 @@ class XrayReporterWithSteps implements Reporter {
     const testCaseKeys: string[] = [];
 
     for (const result of this.results) {
+      if (!result.created) {  // Ne créez un cas de test que si cela n'a pas encore été fait
       const testCaseKey = await this.createTestCaseWithSteps(result.title, result.steps);
       
-      if (testCaseKey) {
-        testCaseKeys.push(testCaseKey);  // Stocke la clé du test créé (ex: KAN-97)
+        if (testCaseKey) {
+          testCaseKeys.push(testCaseKey);  // Stocke la clé du test créé (ex: KAN-97)
+          result.created = true;  // Marquez comme créé
+        }
       }
     }
 
@@ -326,7 +330,7 @@ class XrayReporterWithSteps implements Reporter {
   async onTestEnd(test: TestCase, result: TestResult) {
     const steps = result.steps.map((step: TestStep) => ({
       action: step.title,
-      data: '',  // Ajoutez ici les données des étapes si disponibles
+      data: '',
       result: step.error ? 'The step failed.' : 'The step passed.'
     }));
 
@@ -337,14 +341,13 @@ class XrayReporterWithSteps implements Reporter {
       steps: steps,
       status: result.status,
       error: result.error,
-      //screenshots: result.attachments.filter(att => att.name.endsWith('.png'))  // Récupère les captures d'écran si elles existent
       Screenshots: screenshots
     });
   }
 
   // Récupère l'ID Jira lié à Xray à partir du titre du test
   extractXrayTestId(testTitle: string): string | null {
-    const match = testTitle.match(/@KAN-(\d+)/);  // Ajustez selon votre structure de titre
+    const match = testTitle.match(/@KAN-(\d+)/);  // Ajustez selon le structure du titre
     return match ? match[1] : null;
   }
 
@@ -369,7 +372,7 @@ class XrayReporterWithSteps implements Reporter {
       const testCaseKey = await this.createTestCaseWithSteps(result.title, result.steps);
       
       if (testCaseKey) {
-        testCaseKeys.push(testCaseKey);  // Stocke la clé du test créé
+        testCaseKeys.push(testCaseKey);  // Stocke la clé du test créé (ex: KAN-97)
       }
     }
 
@@ -396,15 +399,15 @@ class XrayReporterWithSteps implements Reporter {
         steps: steps
       }
     ];
-
+//Créer un process de retrying pour gerer les timeout selon la creation des differents cas de test
     let attempts = 0;
-    const maxAttempts = 2; 
-    const waitTime = 3000;
+    const maxAttempts = 3; //le nombre de tentatives
+    const waitTime = 3000; //le nombre de délai entre chaque tentative à 3 secondes
 
     while (attempts < maxAttempts) {
       try {
         const response = await axios.post(
-          `${this.xray_baseURL}/api/v1/import/test/bulk`,
+          `${this.xray_baseURL}/api/v1/import/test/bulk`,//requete pour crée un cas de test fourni par XRAY
           payload,
           {
             headers: {
@@ -434,6 +437,7 @@ class XrayReporterWithSteps implements Reporter {
     return null;
   }
 
+
   // Vérifie le statut du job pour récupérer les clés des cas de tests créés
   async checkJobStatus(jobId: string) {
     const maxAttempts = 10;  // Augmentez le nombre de tentatives
@@ -443,7 +447,7 @@ class XrayReporterWithSteps implements Reporter {
     while (attempts < maxAttempts) {
       try {
         const response = await axios.get(
-          `${this.xray_baseURL}/api/v1/import/test/bulk/${jobId}/status`,
+          `${this.xray_baseURL}/api/v1/import/test/bulk/${jobId}/status`, //requete de check status job par XRAY
           {
             headers: {
               Authorization: `Bearer ${this.xrayToken}`
@@ -453,7 +457,7 @@ class XrayReporterWithSteps implements Reporter {
         
         if (response.data.status === 'successful') {
           const testCaseKeys = response.data.result.issues.map((issue: any) => issue.key);
-          return testCaseKeys;  // Retourne les clés des cas de test créés
+          return testCaseKeys;  // Retourne les clés des cas de test créés (ex: KAN-97)
         } else {
           console.log(`Job status is still pending: ${response.data.status}. Retrying in ${waitTime / 1000} seconds...`);
           attempts++;
@@ -473,8 +477,7 @@ class XrayReporterWithSteps implements Reporter {
   // Crée une exécution de test et y associe les cas de tests créés
 async createTestExecution(testCaseKeys: string[]) {
   const executionPayload = this.buildXrayPayload(testCaseKeys);
-  console.log('Payload for test execution:', JSON.stringify(executionPayload, null, 2)); // Journaliser le payload
-
+  //console.log('Payload for test execution:', JSON.stringify(executionPayload, null, 2)); // logger le payload
   try {
     const response = await axios.post(
       `${this.xray_baseURL}/api/v2/import/execution`,
@@ -496,23 +499,20 @@ async createTestExecution(testCaseKeys: string[]) {
   // Construit le payload pour l'exécution de test
   buildXrayPayload(testCaseKeys: string[]) {
     const currentDateTime = new Date().toISOString();
-    console.log('Results before building Xray payload:', this.results);
     const testCases = this.results.map((result, index) => {
-       const testCaseKey = testCaseKeys[index][0]; // Utilisez les clés ici: on utilise [index][0] vu que c'est un tableau imbriqué
-     
-    // Vérification si result.screenshots est défini et est un tableau
-    const evidence = Array.isArray(result.Screenshots) ? result.Screenshots.map((screenshot) => this.addEvidenceToFailedTest(screenshot)): [];    //const evidence = result.screenshots.map((screenshot) => this.addEvidenceToFailedTest(screenshot)).filter(evidence => evidence !== null);  // Filtre les preuves non valides
+       const testCaseKey = testCaseKeys[index][0]; // Recupérer les clés des cas de test (ex: KAN-97): on utilise [index][0] vu que c'est un tableau imbriqué
+    // Ajoute les preuves (captures d'écran) avec l'ID du test Jira (ex: KAN-97)
+       const evidence = Array.isArray(result.Screenshots) ? result.Screenshots.map((screenshot) => this.addEvidenceToFailedTest(screenshot, testCaseKey)) : []; // Passe l'ID du test ici
 
-      return {
-        testKey: testCaseKey,  
-        start: currentDateTime,
-        finish: currentDateTime,
-        status: this.mapPlaywrightStatusToXray(result.status),
-        comment: result.error ? result.error.message.replace(/\u001b\[.*?m/g, "").replace(/\n/g, "") : undefined,
-        evidence: evidence.length ? evidence : undefined // N'inclut les preuves que si elles existent
-      };
-      
-    });
+        return {
+          testKey: testCaseKey,  
+          start: currentDateTime,
+          finish: currentDateTime,
+          status: this.mapPlaywrightStatusToXray(result.status),
+          comment: result.error ? result.error.message.replace(/\u001b\[.*?m/g, "").replace(/\n/g, "") : undefined,
+          evidence: evidence.length ? evidence : undefined // N'inclut les preuves que si elles existent
+        };
+      });
 
     return {
       info: {
@@ -524,20 +524,23 @@ async createTestExecution(testCaseKeys: string[]) {
   }
 
   // Ajoute une preuve à un test échoué
-  addEvidenceToFailedTest(screenshot: any) {
-    if (!fs.existsSync(screenshot.path)) {
-      console.warn(`Screenshot path does not exist: ${screenshot.path}`);
-      return null;
+  addEvidenceToFailedTest(result: any, testId: string) {
+    const screenshotPath = result.path; // Utilise le chemin récupéré de l'objet screenshot
+    // Vérifier si le chemin du fichier existe avant de le lire
+    if (!screenshotPath || !fs.existsSync(screenshotPath)) {
+      console.warn(`Screenshot not found for test ${testId}: ${screenshotPath}`);
+      return null; // Retourne null si le fichier n'existe pas
     }
+    // Convertit l'image en base64
+    const base64Screenshot = this.convertImageToBase64(screenshotPath);
     
-    const base64Screenshot = this.convertImageToBase64(screenshot.path);
-    console.log(`Adding screenshot evidence: ${screenshot.name}`);
     return {
       data: base64Screenshot,
-      filename: screenshot.name,
+      filename: `${testId}.png`,  // Nom du fichier basé sur l'ID du test
       contentType: 'image/png'
     };
   }
+  
 
   // Fonction pour convertir une image en base64
 convertImageToBase64(imagePath: string) {
