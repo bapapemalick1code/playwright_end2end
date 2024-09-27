@@ -1,4 +1,4 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","5883","Test Case 02 : Login User with incorrect email and password","chromium","Fri Sep 27 17:43:58 UTC 2024","passed","Fri Sep 27 17:44:04 UTC 2024","","POM/test/mytest.spec.ts","",""
-"","9042","Test Case 01 : Register User","chromium","Fri Sep 27 17:43:58 UTC 2024","passed","Fri Sep 27 17:44:07 UTC 2024","","POM/test/mytest.spec.ts","",""
-"","9969","Test Case 03 : Login User with correct email and password","chromium","Fri Sep 27 17:44:30 UTC 2024","failed","Fri Sep 27 17:44:40 UTC 2024","","POM/test/mytest.spec.ts","",""
+"","5139","Test Case 02 : Login User with incorrect email and password","chromium","Fri Sep 27 19:40:45 UTC 2024","passed","Fri Sep 27 19:40:50 UTC 2024","","POM/test/mytest.spec.ts","",""
+"","9806","Test Case 03 : Login User with correct email and password","chromium","Fri Sep 27 19:41:14 UTC 2024","failed","Fri Sep 27 19:41:24 UTC 2024","","POM/test/mytest.spec.ts","",""
+"","8924","Test Case 01 : Register User","chromium","Fri Sep 27 19:40:45 UTC 2024","passed","Fri Sep 27 19:40:54 UTC 2024","","POM/test/mytest.spec.ts","",""
