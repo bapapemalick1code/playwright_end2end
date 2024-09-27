@@ -35,9 +35,11 @@ class XrayReporterWithSteps implements Reporter {
 
   // Stocke les informations des tests
   async onTestEnd(test: TestCase, result: TestResult) {
+    // Ne traite les tests que s'il s'agit du dernier retry
+  if (result.retry === 0) {
     const steps = result.steps.map((step: TestStep) => ({
       action: step.title,
-      data: '',
+      data: '', 
       result: step.error ? 'The step failed.' : 'The step passed.'
     }));
 
@@ -52,6 +54,7 @@ class XrayReporterWithSteps implements Reporter {
       created: false  // Indiquer que le cas de test n'a pas encore été créé (pour gerer le contrainte de retry qui créé 2fois le mm cas de test en l'executant depuis le CI)
     });
   }
+}
 
   // Récupère l'ID Jira lié à Xray à partir du titre du test
   extractXrayTestId(testTitle: string): string | null {
@@ -89,7 +92,6 @@ class XrayReporterWithSteps implements Reporter {
 
     if (testCaseKeys.length > 0) {
       console.log('Test cases created with keys:', testCaseKeys);
-
       // Créez l'exécution de test après avoir créé les cas de tests
       await this.createTestExecution(testCaseKeys);
     } else {
