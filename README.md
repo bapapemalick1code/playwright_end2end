@@ -127,18 +127,27 @@ run: |
   4. Créer des cas de test sur xray et ajouter des tags aux cas de test sur playwright pour le mapping
   5. installer axios pour les requetes HTTPS
   6. Dans votre fichier de configuration playwright.config.ts, ajoutez la référence au reporter personnalisé ['./xray-reporter.ts'] et le screenshot: 'only-on-failure' dans 'use'
-  7. Créer un fichier xray-reporters.ts et faire les config (Voir le fichier)
-  8. À la fin de chaque exécution de test, une nouvelle execution test sera créée depuis Xray avec l'ensemble des cas de test tagués et leur résultat avec les captures d'écran des tests échoués.
+  7. Créer un fichier <xray-reporter.ts> et faire les config (Voir le fichier)
+  8. À la fin de chaque exécution de test, une nouvelle execution test sera créée depuis Xray avec l'ensemble des cas de test tagués et leur résultat avec les captures d'écran des tests échoués. 
+
+  9. Il y a un second fichier <xray-reporter-with-steps.ts> qui permet d'executer les tests puis de créer les cas de tests sur Xray depuis playwright, ensuite de créer une execution test en y liant les cas de test et enfin donner les resultats. 
+     1. NB-1: Il faut lancer le test <POM/test/mytest.spec.ts> pour voir le resultat de ce fichier (A cause des test.step qui sont utilisés) 
+     2. NB-2: ajouter ['./xray-reporter-with-steps.ts'] dans reporter depuis le fichier de playwright.config.ts pour activer la lecture du fichier <xray-reporter-with-steps.ts>
 
 
     
 
-// Je dois voir comment importer avec des tests fails (mettre des steps dans les cas de tests depuis Xray)
-// Je dois voir comment importer avec l'ensemble des infos qu'on doit avoir dans une execution test
+// Je dois voir comment importer avec des tests fails (mettre des steps dans les cas de tests depuis Xray) =>OK
+// Je dois voir comment importer avec l'ensemble des infos qu'on doit avoir dans une execution test   =>OK
 
-// Je dois voir comment créer directement les cas de tests et une execution tests vers Xray
-// Je dois implementer Cucumber 
-// Integrer le CI
+// Je dois voir comment créer directement les cas de tests et une execution tests vers Xray =>OK (avoir les captures d'ecran pour les tests fails et les steps egalement)
+
+// Integrer le CI =>OK
+
+
+// Je dois implementer Cucumber =>NOK
+
 // Commenter le code pour mieux comprendre et faire une documentation dans le readme.
 
+    
     

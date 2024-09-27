@@ -18,6 +18,7 @@ test.beforeEach(async ({ page }) => {
     await expect(page.getByRole('link', { name: 'Home' })).toBeVisible();
 });
 
+/*
 test('Test Case 01 : Register User', async ({ page }) => {
     const signUpPage = new SignUpPage(page);
 
@@ -32,7 +33,7 @@ test('Test Case 01 : Register User', async ({ page }) => {
 });
 
 
-test('Test Case 02 : Login User with correct email and password', async ({ page }) => {
+test('@KAN-2 Test Case 02 : Login User with correct email and password', async ({ page }) => {
     // Récupérer un utilisateur valide
 const validUser = getValidUsers();
 if (!validUser) {
@@ -50,7 +51,7 @@ await loginPage.verifyAccountDeleted();
 });
 
 
-test.only('@XRAY-TICKET-1 Test Case 03 : Login User with incorrect email and password', async ({ page }) => {
+test('@KAN-3 Test Case 03 : Login User with incorrect email and password', async ({ page }) => {
 const loginPage = new LoginPage(page);
 
 await loginPage.navigateToLogin();
@@ -60,7 +61,7 @@ await loginPage.verifyLoginFailure();
 });
 
 
-test('Test Case 04 : Logout User', async ({ page }) => {
+test('@KAN-4 Test Case 04 : Logout User', async ({ page }) => {
     const validUser = getValidUsers();
     if (!validUser) {
         throw new Error('No valid user found. Make sure the user is registered first.');
@@ -73,3 +74,90 @@ test('Test Case 04 : Logout User', async ({ page }) => {
     await logoutPage.logout();
     await logoutPage.verifyLoggedOut();
 });
+*/
+
+//Modification des 3 cas de test ci dessus pour inclure les steps "test.step()" à envoyer sur Xray comme étape de test dans les cas de test créés
+test('Test Case 01 : Register User', async ({ page }) => {
+    const signUpPage = new SignUpPage(page);
+
+    
+    await test.step('Navigate to the login page', async () => {
+        await signUpPage.navigateToSignUp();
+    });
+    await test.step('Fill sign up form', async () => {
+        await signUpPage.fillSignUpForm(dataUser);
+    });
+    await test.step('Submit login form', async () => {
+        await signUpPage.submitSignUp();
+    });
+    await test.step('Verify account creation', async () => {
+        await signUpPage.verifyAccountCreation();
+    });
+    await test.step('Verify logged in', async () => {
+        await signUpPage.verifyLoggedInAs(dataUser.fullname);
+    });
+    
+    
+    // Mettre à jour les informations de connexion de l'utilisateur dans le fichier 'validUser.json'
+    updateValidUsers(dataUser.email, dataUser.password);
+});
+
+
+test('Test Case 02 : Login User with incorrect email and password', async ({ page }) => {
+    const loginPage = new LoginPage(page);
+
+    await test.step('Navigate to the login page', async () => {
+        await loginPage.navigateToLogin();
+    });
+
+    await test.step('Fill login form with invalid email and password', async () => {
+        await loginPage.fillLoginForm('invalidUser@example.com', 'invalidPassword');
+    });
+
+    await test.step('Submit login form', async () => {
+        await loginPage.submitLogin();
+    });
+
+    await test.step('Verify login failure', async () => {
+        await loginPage.verifyLoginFailure();
+    });
+});
+
+
+test('Test Case 03 : Login User with correct email and password', async ({ page }) => {
+    // Récupérer un utilisateur valide
+    const validUser = getValidUsers();
+    if (!validUser) {
+        throw new Error('No valid user found. Make sure the user is registered first.');
+    }
+
+    const loginPage = new LoginPage(page);
+
+    await test.step('Navigate to the login page', async () => {
+        await loginPage.navigateToLogin();
+    });
+
+    await test.step('Fill login form with valid email and password', async () => {
+        await loginPage.fillLoginForm(validUser.password, validUser.password);
+    });
+
+    await test.step('Submit login form', async () => {
+        await loginPage.submitLogin();
+    });
+
+    await test.step('Verify successful login', async () => {
+        await loginPage.verifyLoginSuccess();
+    });
+
+    await test.step('Delete account after login', async () => {
+        await loginPage.deleteAccount();
+    });
+
+    await test.step('Verify account is deleted', async () => {
+        await loginPage.verifyAccountDeleted();
+    });
+});
+
+
+
+

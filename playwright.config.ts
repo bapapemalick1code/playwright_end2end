@@ -26,8 +26,8 @@ export default defineConfig({
   reporter: [
     ['list'], // Affiche un résumé dans la console
     ['allure-playwright'], // Génère des rapports Allure
-    ['./xray-reporter.ts'], // Génère des rapports Xray
-    //[new XrayReporter()]
+   // ['./xray-reporter.ts'], // Génère des rapports sur Xray
+    ['./xray-reporter-with-steps.ts'], // Génère des rapports sur Xray avec les steps 
   ],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
