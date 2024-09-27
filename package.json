@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean:allure": "rm -rf allure-results && rm -rf allure-report",
-    "test": "playwright test tests/Mode_FIXTURE/test_/mytest_.spec.ts",
+    "test": "playwright test tests/POM/test/mytest.spec.ts",
     "allure:generate": "allure generate --clean",
     "allure:open": "allure open",
     "test:allure": "npm run clean:allure && npm run test || true && npm run allure:generate"
